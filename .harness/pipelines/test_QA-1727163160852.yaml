@@ -36,7 +36,7 @@ pipeline:
             strategy:
               repeat:
                 times: 60
-                maxConcurrency: 5
+                maxConcurrency: 4
         - stage:
             name: test
             identifier: test
@@ -62,7 +62,7 @@ pipeline:
             strategy:
               repeat:
                 times: 60
-                maxConcurrency: 5
+                maxConcurrency: 4
         - stage:
             name: prepare
             identifier: prepare
@@ -88,7 +88,7 @@ pipeline:
             strategy:
               repeat:
                 times: 60
-                maxConcurrency: 5
+                maxConcurrency: 4
         - stage:
             name: go build tes
             identifier: go_build_tes
@@ -114,7 +114,7 @@ pipeline:
             strategy:
               repeat:
                 times: 60
-                maxConcurrency: 5
+                maxConcurrency: 4
         - stage:
             name: clearing
             identifier: clearing
@@ -140,7 +140,7 @@ pipeline:
             strategy:
               repeat:
                 times: 60
-                maxConcurrency: 5
+                maxConcurrency: 4
     - stage:
         name: done
         identifier: done
