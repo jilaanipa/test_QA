@@ -1,98 +1,31 @@
----
-name: Gitwatch QA
+name: git-auto-commit
 
 on:
   push:
+    branches:
+      - master
   pull_request:
-    branches: [master]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
-  #-------------------------------------------------------------------------
-  super-lint:
-    name: Lint Code Base
-
-    # Don't run action if commit message has #noaction in it.
-    if: "! contains(github.event.head_commit.message, '#noaction')"
-
-    # I don't think running lint on multiple os' will do any good.
+  git-auto-commit:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-    # For the time being, I'm giving up on Super Linter. It's a great tool,
-    # but it's currently broken, and it's taking more time to make it work than
-    # it's worth.
-      # - name: Lint Code Base
-      #   uses: github/super-linter@v4
-      #   env:
-      #     DEFAULT_BRANCH: master
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     # Linter is having errors at symbolic link, appears to be
-      #     # this bug:
-      #     # https://github.com/github/super-linter/issues/1400
-      #     # https://github.com/kucherenko/jscpd/issues/481
-      #     # Test files are bats files, which don't follow bash standards
-      #     # FILTER_REGEX_EXCLUDE: \.github/linters/\.markdown-lint.yml | tests\.*
-      #     # FILTER_REGEX_EXCLUDE: tests\.*
-
-  #-------------------------------------------------------------------------
-  bats:
-    name: BATS Tests
-
-    # Don't run action if commit message has #noaction in it.
-    if: "! contains(github.event.head_commit.message, '#noaction')"
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macOS-latest]
-
-    # The type of runner that the job will run on
-    runs-on: ${{ matrix.os }}
-
-    timeout-minutes: 5
+    permissions:
+      # Give the default GITHUB_TOKEN write permission.
+      # https://github.blog/changelog/2023-02-02-github-actions-updating-the-default-github_token-permissions-to-read-only/
+      contents: write
 
     steps:
-      - name: Setup node
-        uses: actions/setup-node@v3
-      - name: Setup BATS
-        run: sudo npm install -g bats
+    - uses: actions/checkout@v4
 
-      - name: Install gitwatch dependencies
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            sudo apt-get -y install inotify-tools
+    - name: Use git-auto-commit-action
+      id: "auto-commit-action"
+      uses: ./
 
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-            brew install fswatch
-            brew install coreutils   # in order to get readlink
+    - name: "no changes detected"
+      if: steps.auto-commit-action.outputs.changes_detected == 'false'
+      run: "echo \"No changes detected\""
 
-          else
-            echo "Unsupported OS: $RUNNER_OS"
-            exit 1
-          fi
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1
-
-      - name: Run tests
-        shell: bash
-        run: |
-          git config --global user.email "test@email.com"
-          git config --global user.name "test user"
-          bats -rt tests
-          #bats -rt othertests
-          echo "Finished running tests"
-
-      - name: Test step
-        run: echo "Now at test step"
+    - name: "changes detected"
+      if: steps.auto-commit-action.outputs.changes_detected == 'true'
+      run: "echo \"Changes detected\""
