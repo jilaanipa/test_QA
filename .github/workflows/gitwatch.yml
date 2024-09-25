@@ -1,5 +1,6 @@
 name: Update YAML File
 
+# Menjalankan workflow pada push ke main atau sesuai jadwal (cron)
 on:
   push:
     branches:
@@ -17,19 +18,19 @@ jobs:
 
     - name: Modify YAML File
       run: |
-        # Menambahkan baris kosong di akhir file
-        echo "" >> test_QA-1727163160852.yaml
-        # Atau, gunakan sed untuk menambah baris baru setelah baris tertentu (misalnya baris terakhir)
-        # sed -i -e '$a\' test_QA-1727163160852.yaml
+        # Tambahkan enter (baris kosong) di akhir file
+        echo "" >> .harness/pipelines/test_QA-1727163160852.yaml
+        # Atau, Anda bisa menggunakan `sed` untuk menambah baris baru
+        # sed -i -e '$a\' .harness/pipelines/test_QA-1727163160852.yaml
         
-        # Menyiapkan Git untuk commit
+        # Setup git config
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
+        
         # Commit perubahan jika ada modifikasi
         if [[ $(git status --porcelain) ]]; then
-          git add test_QA-1727163160852.yaml
-          git commit -m "Automated edit: added new line to test_QA-1727163160852.yaml"
+          git add .harness/pipelines/test_QA-1727163160852.yaml
+          git commit -m "Automated update: added new line to .harness/pipelines/test_QA-1727163160852.yaml"
         fi
 
     - name: Push changes
