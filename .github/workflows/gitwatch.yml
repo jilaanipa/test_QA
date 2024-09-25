@@ -1,31 +1,35 @@
-name: git-auto-commit
+name: Update YAML File
 
+# Menjalankan workflow ini saat ada perubahan pada branch main atau pada waktu yang dijadwalkan
 on:
   push:
     branches:
-      - master
-  pull_request:
+      - main
+  schedule:
+    - cron: '0 0 * * *' # Ini akan dijalankan setiap hari pada pukul 00:00 UTC
 
 jobs:
-  git-auto-commit:
+  update-yaml:
     runs-on: ubuntu-latest
 
-    permissions:
-      # Give the default GITHUB_TOKEN write permission.
-      # https://github.blog/changelog/2023-02-02-github-actions-updating-the-default-github_token-permissions-to-read-only/
-      contents: write
-
     steps:
-    - uses: actions/checkout@v4
+    # Langkah untuk checkout repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-    - name: Use git-auto-commit-action
-      id: "auto-commit-action"
-      uses: ./
-
-    - name: "no changes detected"
-      if: steps.auto-commit-action.outputs.changes_detected == 'false'
-      run: "echo \"No changes detected\""
-
-    - name: "changes detected"
-      if: steps.auto-commit-action.outputs.changes_detected == 'true'
-      run: "echo \"Changes detected\""
+    # Langkah untuk mengubah file YAML
+    - name: Update YAML File
+      run: |
+        # Edit konten file sesuai dengan kebutuhan Anda
+        echo "Updating the YAML file"
+        echo "new_key: new_value" >> test_QA-1727163160852.yaml
+        # Tambahkan perubahan ke git
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add test_QA-1727163160852.yaml
+        git commit -m "Automated update to test_QA-1727163160852.yaml"
+      
+    # Langkah untuk push perubahan kembali ke repositori
+    - name: Push changes
+      run: |
+        git push
