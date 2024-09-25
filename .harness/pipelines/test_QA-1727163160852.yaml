@@ -37,6 +37,8 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
+            when:
+              pipelineStatus: All
         - stage:
             name: test
             identifier: test
@@ -63,6 +65,8 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
+            when:
+              pipelineStatus: All
         - stage:
             name: prepare
             identifier: prepare
@@ -89,6 +93,8 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
+            when:
+              pipelineStatus: All
         - stage:
             name: go build tes
             identifier: go_build_tes
@@ -115,6 +121,8 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
+            when:
+              pipelineStatus: All
         - stage:
             name: clearing
             identifier: clearing
@@ -141,6 +149,8 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
+            when:
+              pipelineStatus: All
     - stage:
         name: done
         identifier: done
